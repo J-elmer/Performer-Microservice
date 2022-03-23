@@ -1,0 +1,46 @@
+version: '3.1'
+
+services:
+
+  performer:
+    image: performer-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "6060:6060"
+    networks:
+      - performer
+    depends_on:
+      - mysql
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysql:3306/performer?createDatabaseIfNotExist=true
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: performer
+    ports:
+      - "3306:3306"
+    networks:
+      - performer
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8090:8080"
+    networks:
+      - performer
+
+volumes:
+  mysql_data:
+
+networks:
+  performer:
+    driver: bridge
