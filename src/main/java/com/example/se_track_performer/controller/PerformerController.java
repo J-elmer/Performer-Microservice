@@ -119,4 +119,13 @@ public class PerformerController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
+
+    @GetMapping(value="/check-id")
+    public ResponseEntity<Boolean> checkPerformerId(@RequestParam Long id) {
+        Performer performer = this.performerService.getPerformerById(id);
+        if (performer == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(false);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
 }
