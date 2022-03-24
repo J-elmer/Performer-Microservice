@@ -3,6 +3,7 @@ package com.example.se_track_performer.service;
 import com.example.se_track_performer.controller.DTO.NewPerformerDTO;
 import com.example.se_track_performer.controller.DTO.UpdatePerformerDTO;
 import com.example.se_track_performer.exception.InvalidPerformerDTOException;
+import com.example.se_track_performer.exception.PerformerHasConcertsException;
 import com.example.se_track_performer.exception.PerformerNotFoundException;
 import com.example.se_track_performer.model.Performer;
 import com.example.se_track_performer.repository.PerformerRepository;
@@ -82,7 +83,7 @@ class PerformerServiceTest {
         Mockito.when(this.performerRepository.findPerformerById(1L)).thenReturn(performerUnderTest1);
         try {
             this.performerService.delete(1L);
-        } catch (PerformerNotFoundException e) {
+        } catch (PerformerNotFoundException | PerformerHasConcertsException e) {
             e.printStackTrace();
         }
         verify(this.performerRepository, times(1)).delete(performerUnderTest1);

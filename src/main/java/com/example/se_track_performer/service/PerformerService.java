@@ -3,12 +3,15 @@ package com.example.se_track_performer.service;
 import com.example.se_track_performer.controller.DTO.NewPerformerDTO;
 import com.example.se_track_performer.controller.DTO.UpdatePerformerDTO;
 import com.example.se_track_performer.exception.InvalidPerformerDTOException;
+import com.example.se_track_performer.exception.PerformerHasConcertsException;
 import com.example.se_track_performer.exception.PerformerNotFoundException;
 import com.example.se_track_performer.model.Performer;
 import com.example.se_track_performer.repository.PerformerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -16,10 +19,13 @@ import java.util.List;
 public class PerformerService {
 
     private final PerformerRepository performerRepository;
+    private final WebClient webClient;
+    private final String performerCheckUri = "http://host.docker.internal:9090/concert/check-delete-performer?performerId=";
 
     @Autowired
     public PerformerService(PerformerRepository performerRepository) {
         this.performerRepository = performerRepository;
+        this.webClient = WebClient.create();
     }
 
     /**
@@ -88,10 +94,13 @@ public class PerformerService {
      * @throws PerformerNotFoundException if performer is not found
      * @throws DataIntegrityViolationException thrown when performer still has concerts associated with them
      */
-    public void delete(Long id) throws PerformerNotFoundException, DataIntegrityViolationException {
+    public void delete(Long id) throws PerformerNotFoundException, DataIntegrityViolationException, PerformerHasConcertsException {
         Performer performerToDelete = this.performerRepository.findPerformerById(id);
         if (performerToDelete == null) {
             throw new PerformerNotFoundException();
+        }
+        if (!checkIfPerformerCanBeDeleted(id)) {
+            throw new PerformerHasConcertsException();
         }
         this.performerRepository.delete(performerToDelete);
     }
@@ -104,5 +113,14 @@ public class PerformerService {
     public Performer retrievePerformer(String name) {
         return !this.performerRepository.findByNameIgnoreCase(name).isEmpty() ?
                 this.performerRepository.findByNameIgnoreCase(name).get(0) : null;
+    }
+
+    private boolean checkIfPerformerCanBeDeleted(long performerId) {
+        ResponseEntity<Boolean> response = webClient.get().uri(performerCheckUri + performerId).retrieve().toEntity(Boolean.class).block();
+        if (response != null) {
+            System.out.println(response.getBody());
+            return Boolean.TRUE.equals(response.getBody());
+        }
+        return false;
     }
 }

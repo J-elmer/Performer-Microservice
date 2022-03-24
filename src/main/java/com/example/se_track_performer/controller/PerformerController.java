@@ -4,6 +4,7 @@ import com.example.se_track_performer.controller.DTO.JsonResponseDTO;
 import com.example.se_track_performer.controller.DTO.NewPerformerDTO;
 import com.example.se_track_performer.controller.DTO.UpdatePerformerDTO;
 import com.example.se_track_performer.exception.InvalidPerformerDTOException;
+import com.example.se_track_performer.exception.PerformerHasConcertsException;
 import com.example.se_track_performer.exception.PerformerNotFoundException;
 import com.example.se_track_performer.model.Performer;
 import com.example.se_track_performer.service.PerformerService;
@@ -113,7 +114,7 @@ public class PerformerController {
         } catch (PerformerNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                     body(new JsonResponseDTO("No performer found with id " + id));
-        } catch (DataIntegrityViolationException e) {
+        } catch (PerformerHasConcertsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(
                     new JsonResponseDTO("Could not delete performer with id " + id + " for it is still associated with concerts"));
         }
