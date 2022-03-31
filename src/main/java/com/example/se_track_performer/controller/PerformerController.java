@@ -97,7 +97,7 @@ public class PerformerController {
                     body(new JsonResponseDTO("No performer found with name " + updatePerformerDTO.getName()));
         } catch (InvalidPerformerDTOException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                    body(new JsonResponseDTO("No name or style provided, can't update performer"));
+                    body(new JsonResponseDTO("No age or style provided, can't update performer"));
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
