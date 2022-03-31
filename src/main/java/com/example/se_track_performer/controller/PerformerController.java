@@ -77,7 +77,7 @@ public class PerformerController {
         try {
             this.performerService.createPerformer(newPerformerDTO);
         } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Performer with name " + newPerformerDTO.getName() + " already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new JsonResponseDTO("Performer " + newPerformerDTO.getName() + " already exists"));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
