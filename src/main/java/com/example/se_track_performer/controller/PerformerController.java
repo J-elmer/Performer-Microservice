@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("performer")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class PerformerController {
 
     private final PerformerService performerService;
