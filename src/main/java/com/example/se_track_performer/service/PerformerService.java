@@ -8,6 +8,7 @@ import com.example.se_track_performer.exception.PerformerNotFoundException;
 import com.example.se_track_performer.model.Performer;
 import com.example.se_track_performer.repository.PerformerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,15 @@ public class PerformerService {
 
     private final PerformerRepository performerRepository;
     private final WebClient webClient;
-    private final String performerCheckUri = "http://host.docker.internal:9090/concert/check-delete-performer?performerId=";
+    private final String performerCheckUri;
+    private final Environment env;
 
     @Autowired
-    public PerformerService(PerformerRepository performerRepository) {
+    public PerformerService(PerformerRepository performerRepository, Environment env) {
         this.performerRepository = performerRepository;
         this.webClient = WebClient.create();
+        this.env = env;
+        this.performerCheckUri = this.env.getProperty("concert.api") + "check-delete-performer?performerId=";
     }
 
     /**
