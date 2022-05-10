@@ -3,12 +3,21 @@ This is the performer microservice which is part of ReviewStars. To launch the c
 
 To review this code, you can pull the repository locally.
 
-In order to run the application, follow these steps:
+**Installation**
 
-1: navigate to the project directory
+*Prerequisites*:
+Make sure you have Docker installed and can run Java applications.
 
-2: run docker-compose up -d
+Steps:
 
-3: run the project locally (through IntelliJ for example)
+Navigate to the project directory and run
+
+```
+docker-compose up -d in your terminal
+```
+
+Once the containers are running, start the project locally (through IntelliJ for example).
+
+You can test through postman. The application is configured to run on port 6060, so be sure to send requests to that port or change it in the application.properties file.
 
 Note that for the whole functionallity to work, you should also make sure you run the concert microservice, otherwise deleting and updating performers will not work as expected.
