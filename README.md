@@ -8,7 +8,7 @@ To review this code, you can pull the repository locally.
 *Prerequisites*:
 Make sure you have Docker installed and can run Java applications.
 
-Steps:
+*Steps*:
 
 Navigate to the project directory and run
 
