@@ -1,5 +1,5 @@
 # Performer-Microservice
-This is the performer microservice which is part of ReviewStars. To launch the complete application, see the ReviewStars repository.
+This is the performer microservice which is part of ReviewStars. To launch the complete application, see the [ReviewStars repository](https://github.com/J-elmer/ReviewStars).
 
 To review this code, you can pull the repository locally.
 
@@ -22,4 +22,4 @@ You can test through postman. The application is configured to run on port 6060,
 
 **Important note**
 
-In order for the whole application to work, you should also make sure you run the concert microservice, otherwise deleting and updating performers will not work as expected.
+In order for the whole application to work, you should also make sure you run the [concert microservice](https://github.com/J-elmer/Concert-microservice), otherwise deleting and updating performers will not work as expected.
